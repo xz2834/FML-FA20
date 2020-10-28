@@ -1,0 +1,3 @@
+gunzip libsvm-3.0.tar.gz
+tar xvf libsvm-3.0.tar
+cd libsvm-3.0
