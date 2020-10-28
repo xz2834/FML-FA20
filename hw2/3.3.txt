@@ -1,4 +1,3 @@
-# Split the training data into ten equal-sized disjoint sets:
 sort -R output/train.scaled.txt \
 > output/train.scaled.shuffled.txt
 NUM_SAMPLES=$(cat output/train.scaled.shuffled.txt \
@@ -13,12 +12,11 @@ awk "NR >= $NUM_SAMPLES * ($SPLIT - 1) / 10.0 \
 output/train.scaled.shuffled.txt \
 > output/dev.$SPLIT.txt
 done
-# Compute accuracy for different values of $C$ and
-# for degrees 1 through 4 of the polynomial kernel.
+
 for LOG2C in $(seq -10 10); do
 for DEGREE in 1 2 3 4; do
 for SPLIT in $(seq 1 10); do
-# Train models.
+
 C=$(python -c "print 2 ** $LOG2C")
 echo "c="$C "d="$DEGREE "split="$SPLIT
 libsvm-3.0/svm-train -t 1 -d $DEGREE -c $C \
@@ -32,8 +30,7 @@ output/dev.$LOG2C.$DEGREE.$SPLIT.prediction.txt \
 done
 done
 done
-# Compute mean and standard deviation
-# of classification accuracy.
+
 echo -n > output/dev.results.txt
 for F in output/dev.*.log.txt; do
 echo $F $(cat $F) | \
